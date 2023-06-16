@@ -1,4 +1,4 @@
-package fr.diginamic.entities;
+package fr.diginamic.jpa;
 
 import jakarta.persistence.*;
 
@@ -19,6 +19,8 @@ public class ABaseEntity {
         this.id = id;
     }
 
+    @PrePersist
+    @PostLoad
     public void trackNotNew() {
         this.isNew = false;
     }

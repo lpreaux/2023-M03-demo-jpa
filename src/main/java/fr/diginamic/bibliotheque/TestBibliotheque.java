@@ -1,10 +1,10 @@
-package fr.diginamic;
+package fr.diginamic.bibliotheque;
 
-import fr.diginamic.entities.Client;
-import fr.diginamic.entities.Emprunt;
-import fr.diginamic.entities.Livre;
-import fr.diginamic.jpa.repositories.ClientRepository;
-import fr.diginamic.jpa.repositories.EmpruntRepository;
+import fr.diginamic.bibliotheque.entities.Client;
+import fr.diginamic.bibliotheque.entities.Emprunt;
+import fr.diginamic.bibliotheque.entities.Livre;
+import fr.diginamic.bibliotheque.repositories.ClientRepository;
+import fr.diginamic.bibliotheque.repositories.EmpruntRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

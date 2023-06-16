@@ -1,7 +1,7 @@
-package fr.diginamic;
+package fr.diginamic.bibliotheque;
 
-import fr.diginamic.entities.Livre;
-import fr.diginamic.jpa.repositories.LivreRepository;
+import fr.diginamic.bibliotheque.entities.Livre;
+import fr.diginamic.bibliotheque.repositories.LivreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,8 +1,6 @@
-package fr.diginamic.jpa.repositories;
+package fr.diginamic.jpa;
 
 import fr.diginamic.exception.DataException;
-import fr.diginamic.entities.ABaseEntity;
-import fr.diginamic.jpa.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
@@ -43,27 +41,21 @@ public abstract class ARepository<T extends ABaseEntity> {
     public List<T> findAll() {
         Class<T> entityType = getEntityType();
         String qlString = String.format(FIND_ALL, entityType.getSimpleName());
-        List<T> entities = doWithEm(em -> em.createQuery(qlString, entityType).getResultList());
-        entities.forEach(T::trackNotNew);
-        return entities;
+        return doWithEm(em1 -> em1.createQuery(qlString, entityType).getResultList());
     }
 
     public T findById(int id) {
         Class<T> entityType = getEntityType();
         String qlString = String.format(FIND_ONE, entityType.getSimpleName());
-        T entity = doWithEm(em -> {
-            TypedQuery<T> query = em.createQuery(qlString, entityType);
+        return doWithEm(em1 -> {
+            TypedQuery<T> query = em1.createQuery(qlString, entityType);
             query.setParameter("id", id);
             return query.getSingleResult();
         });
-        entity.trackNotNew();
-        return entity;
     }
 
     public T findReferenceById(int id) {
-        T entity = doWithEm(em -> em.getReference(getEntityType(), id));
-        entity.trackNotNew();
-        return entity;
+        return doWithEm(em1 -> em1.getReference(getEntityType(), id));
     }
 
     public void create(T entity) {
@@ -73,7 +65,6 @@ public abstract class ARepository<T extends ABaseEntity> {
                     " already exist.");
         }
         persist(entity);
-        entity.trackNotNew();
         getLogger().info("New {} added with id: {}", getEntityType().getSimpleName(), entity.getId());
     }
 
