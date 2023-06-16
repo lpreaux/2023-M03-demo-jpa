@@ -19,11 +19,11 @@ public abstract class ARepository<T extends ABaseEntity> {
     protected abstract Class<T> getEntityType();
     protected  abstract Logger getLogger();
 
-    private <R> R doWithEm(Function<EntityManager, R> fn) {
+    protected <R> R doWithEm(Function<EntityManager, R> fn) {
         return fn.apply(em);
     }
 
-    private <R> R doWithTransaction(Function<EntityManager, R> fn) {
+    protected <R> R doWithTransaction(Function<EntityManager, R> fn) {
         return doWithEm(em -> {
             EntityTransaction tx = em.getTransaction();
             tx.begin();
@@ -51,11 +51,17 @@ public abstract class ARepository<T extends ABaseEntity> {
     public T findById(int id) {
         Class<T> entityType = getEntityType();
         String qlString = String.format(FIND_ONE, entityType.getSimpleName());
-        T entity = doWithTransaction(em -> {
+        T entity = doWithEm(em -> {
             TypedQuery<T> query = em.createQuery(qlString, entityType);
             query.setParameter("id", id);
             return query.getSingleResult();
         });
+        entity.trackNotNew();
+        return entity;
+    }
+
+    public T findReferenceById(int id) {
+        T entity = doWithEm(em -> em.getReference(getEntityType(), id));
         entity.trackNotNew();
         return entity;
     }
