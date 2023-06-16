@@ -13,7 +13,7 @@ public class EntityManagerProvider {
     }
 
     public static EntityManager getEntityManager(String persistenceUnitName) {
-        if (null != ems.get(persistenceUnitName)) {
+        if (null == ems.get(persistenceUnitName)) {
             ems.put(persistenceUnitName, EntityManagerFactoryProvider.getEntityManagerFactory(persistenceUnitName).createEntityManager());
         }
         return  ems.get(persistenceUnitName);

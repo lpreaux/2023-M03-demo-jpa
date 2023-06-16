@@ -28,6 +28,16 @@ public class Livre extends ABaseEntity {
         this.auteur = auteur;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Livre{");
+        sb.append("id=").append(getId()).append('\'');
+        sb.append(", titre='").append(titre).append('\'');
+        sb.append(", auteur='").append(auteur).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public String getTitre() {
         return titre;
     }

@@ -7,17 +7,16 @@ import org.slf4j.LoggerFactory;
 public class LivreRepository extends ARepository<Livre> {
     private static LivreRepository instance;
 
-    private final Logger LOG = LoggerFactory.getLogger(LivreRepository.class);
-
-    private LivreRepository() {}
-
-    @Override
-    public ARepository<Livre> getInstance() {
-        if (null != instance) {
+    public static ARepository<Livre> getInstance() {
+        if (null == instance) {
             instance = new LivreRepository();
         }
         return instance;
     }
+
+    private final Logger LOG = LoggerFactory.getLogger(LivreRepository.class);
+
+    private LivreRepository() {}
 
     @Override
     protected Class<Livre> getEntityType() {

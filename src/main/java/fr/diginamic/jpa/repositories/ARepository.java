@@ -1,5 +1,6 @@
 package fr.diginamic.jpa.repositories;
 
+import fr.diginamic.DataException;
 import fr.diginamic.entities.ABaseEntity;
 import fr.diginamic.jpa.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
@@ -15,7 +16,6 @@ public abstract class ARepository<T extends ABaseEntity> {
     private static final String FIND_ONE = "SELECT e FROM %s e WHERE ID=:id";
     private final EntityManager em = EntityManagerProvider.getEntityManager("demo-jpa");
 
-    public abstract ARepository<T> getInstance();
     protected abstract Class<T> getEntityType();
     protected  abstract Logger getLogger();
 
@@ -33,28 +33,52 @@ public abstract class ARepository<T extends ABaseEntity> {
         });
     }
 
-    public List<T> findAll() {
-        Class<T> entityType = getEntityType();
-        String qlString = String.format(FIND_ALL, entityType.getSimpleName());
-        return doWithEm(em -> em.createQuery(qlString, entityType).getResultList());
-    }
-
-    public T findById(int id) {
-        Class<T> entityType = getEntityType();
-        String qlString = String.format(FIND_ONE, entityType);
-        return doWithTransaction(em -> {
-            TypedQuery<T> query = em.createQuery(qlString, entityType);
-            query.setParameter("id", id);
-            return query.getSingleResult();
-        });
-    }
-
-    public void persist(T entity) {
+    private void persist(T entity) {
         doWithTransaction(em -> {
             em.persist(entity);
             return entity;
         });
+    }
+
+    public List<T> findAll() {
+        Class<T> entityType = getEntityType();
+        String qlString = String.format(FIND_ALL, entityType.getSimpleName());
+        List<T> entities = doWithEm(em -> em.createQuery(qlString, entityType).getResultList());
+        entities.forEach(T::trackNotNew);
+        return entities;
+    }
+
+    public T findById(int id) {
+        Class<T> entityType = getEntityType();
+        String qlString = String.format(FIND_ONE, entityType.getSimpleName());
+        T entity = doWithTransaction(em -> {
+            TypedQuery<T> query = em.createQuery(qlString, entityType);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        });
+        entity.trackNotNew();
+        return entity;
+    }
+
+    public void create(T entity) {
+        if (!entity.isNew()) {
+            throw new DataException("Entity of type " + getEntityType().getSimpleName() +
+                    " with id " + entity.getId() +
+                    " already exist.");
+        }
+        persist(entity);
+        entity.trackNotNew();
         getLogger().info("New {} added with id: {}", getEntityType().getSimpleName(), entity.getId());
+    }
+
+    public void update(T entity) {
+        if (entity.isNew()) {
+            throw new DataException("Entity of type " + getEntityType().getSimpleName() +
+                    " with id " + entity.getId() +
+                    " is new and can't be updated. It must be created first with create(...)");
+        }
+        persist(entity);
+        getLogger().info("Entity of type {} with id {} updated", getEntityType().getSimpleName(), entity.getId());
     }
 
     public void delete(T entity) {
@@ -62,5 +86,6 @@ public abstract class ARepository<T extends ABaseEntity> {
             em.remove(entity);
             return entity;
         });
+        getLogger().info("Entity of type {} with id {} deleted", getEntityType().getSimpleName(), entity.getId());
     }
 }

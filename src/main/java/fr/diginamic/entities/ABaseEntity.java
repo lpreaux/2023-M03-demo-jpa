@@ -1,14 +1,12 @@
 package fr.diginamic.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 @MappedSuperclass
 public class ABaseEntity {
     @Id
     @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Transient
