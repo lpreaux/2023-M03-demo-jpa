@@ -7,7 +7,7 @@ public class ABaseEntity {
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @Transient
     private boolean isNew = true;
@@ -33,5 +33,12 @@ public class ABaseEntity {
 
     public boolean isNew() {
         return isNew;
+    }
+
+    @Override
+    public String toString() {
+        return "ABaseEntity{" +
+                "id=" + id +
+                '}';
     }
 }

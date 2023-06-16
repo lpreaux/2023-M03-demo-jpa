@@ -11,6 +11,7 @@ public class LivreRepository extends ARepository<Livre> {
     private static final String FIND_BY_TITRE = "SELECT l FROM Livre l WHERE titre=:titre";
     private static final String FIND_BY_AUTEUR = "SELECT l FROM Livre l WHERE auteur=:auteur";
     private static LivreRepository instance;
+    private static final Logger LOG = LoggerFactory.getLogger(LivreRepository.class);
 
     public static LivreRepository getInstance() {
         if (null == instance) {
@@ -18,8 +19,6 @@ public class LivreRepository extends ARepository<Livre> {
         }
         return instance;
     }
-
-    private final Logger LOG = LoggerFactory.getLogger(LivreRepository.class);
 
     private LivreRepository() {}
 

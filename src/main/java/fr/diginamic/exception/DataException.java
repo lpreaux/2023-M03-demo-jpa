@@ -1,4 +1,4 @@
-package fr.diginamic;
+package fr.diginamic.exception;
 
 public class DataException extends RuntimeException{
     /**

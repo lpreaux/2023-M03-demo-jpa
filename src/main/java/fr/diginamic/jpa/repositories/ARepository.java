@@ -1,6 +1,6 @@
 package fr.diginamic.jpa.repositories;
 
-import fr.diginamic.DataException;
+import fr.diginamic.exception.DataException;
 import fr.diginamic.entities.ABaseEntity;
 import fr.diginamic.jpa.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
@@ -17,7 +17,7 @@ public abstract class ARepository<T extends ABaseEntity> {
     private final EntityManager em = EntityManagerProvider.getEntityManager("demo-jpa");
 
     protected abstract Class<T> getEntityType();
-    protected  abstract Logger getLogger();
+    protected abstract Logger getLogger();
 
     protected <R> R doWithEm(Function<EntityManager, R> fn) {
         return fn.apply(em);
