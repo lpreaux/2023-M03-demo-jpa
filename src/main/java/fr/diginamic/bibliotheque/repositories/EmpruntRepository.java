@@ -1,7 +1,8 @@
-package fr.diginamic.jpa.repositories;
+package fr.diginamic.bibliotheque.repositories;
 
-import fr.diginamic.entities.Client;
-import fr.diginamic.entities.Emprunt;
+import fr.diginamic.bibliotheque.entities.Client;
+import fr.diginamic.bibliotheque.entities.Emprunt;
+import fr.diginamic.jpa.ARepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,10 +33,8 @@ public class EmpruntRepository extends ARepository<Emprunt> {
     }
 
     public List<Emprunt> findByClient(Client client) {
-        List<Emprunt> emprunts = doWithEm(em -> em.createQuery(FIND_BY_CLIENT, Emprunt.class)
+        return doWithEm(em -> em.createQuery(FIND_BY_CLIENT, Emprunt.class)
                 .setParameter("client", client)
                 .getResultList());
-        emprunts.forEach(Emprunt::trackNotNew);
-        return emprunts;
     }
 }

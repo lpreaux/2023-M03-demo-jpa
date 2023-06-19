@@ -1,5 +1,6 @@
-package fr.diginamic.entities;
+package fr.diginamic.bibliotheque.entities;
 
+import fr.diginamic.jpa.ABaseEntity;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;

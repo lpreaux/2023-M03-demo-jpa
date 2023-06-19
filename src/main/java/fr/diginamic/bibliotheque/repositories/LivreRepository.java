@@ -1,6 +1,7 @@
-package fr.diginamic.jpa.repositories;
+package fr.diginamic.bibliotheque.repositories;
 
-import fr.diginamic.entities.Livre;
+import fr.diginamic.bibliotheque.entities.Livre;
+import fr.diginamic.jpa.ARepository;
 import jakarta.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,22 +34,18 @@ public class LivreRepository extends ARepository<Livre> {
     }
 
     public List<Livre> findByTitre(String titre) {
-        List<Livre> livres = doWithEm(em -> {
+        return doWithEm(em -> {
             TypedQuery<Livre> query = em.createQuery(FIND_BY_TITRE, Livre.class);
             query.setParameter("titre", titre);
             return query.getResultList();
         });
-        livres.forEach(Livre::trackNotNew);
-        return livres;
     }
 
     public List<Livre> findByAuteur(String auteur) {
-        List<Livre> livres = doWithEm(em -> {
+        return doWithEm(em -> {
             TypedQuery<Livre> query = em.createQuery(FIND_BY_AUTEUR, Livre.class);
             query.setParameter("auteur", auteur);
             return query.getResultList();
         });
-        livres.forEach(Livre::trackNotNew);
-        return livres;
     }
 }

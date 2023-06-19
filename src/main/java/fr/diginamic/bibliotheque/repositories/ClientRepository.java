@@ -1,6 +1,7 @@
-package fr.diginamic.jpa.repositories;
+package fr.diginamic.bibliotheque.repositories;
 
-import fr.diginamic.entities.Client;
+import fr.diginamic.bibliotheque.entities.Client;
+import fr.diginamic.jpa.ARepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

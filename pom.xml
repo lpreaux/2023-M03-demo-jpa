@@ -12,7 +12,32 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jpa.schemageneration>none</jpa.schemageneration>
     </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <jpa.schemageneration>drop-and-create</jpa.schemageneration>
+            </properties>
+        </profile>
+       <profile>
+           <id>prod</id>
+       </profile>
+    </profiles>
 
     <dependencies>
         <dependency>

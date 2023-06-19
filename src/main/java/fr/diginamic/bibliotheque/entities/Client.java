@@ -1,6 +1,7 @@
-package fr.diginamic.entities;
+package fr.diginamic.bibliotheque.entities;
 
 import fr.diginamic.exception.DataException;
+import fr.diginamic.jpa.ABaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
