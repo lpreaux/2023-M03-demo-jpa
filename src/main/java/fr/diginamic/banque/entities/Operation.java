@@ -7,8 +7,17 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "operation")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("O")
 public class Operation extends ABaseEntity {
+    public static Operation createNewOperation(LocalDateTime date, double montant, String motif, Compte compte) {
+        Operation operation = new Operation();
+        operation.setDate(date);
+        operation.setMontant(montant);
+        operation.setMotif(motif);
+        operation.setCompte(compte);
+        return operation;
+    }
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
@@ -21,6 +30,16 @@ public class Operation extends ABaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "compte_id", nullable = false)
     private Compte compte;
+
+    public Operation() {}
+
+    public Operation(Integer id, LocalDateTime date, double montant, String motif, Compte compte) {
+        super(id);
+        this.date = date;
+        this.montant = montant;
+        this.motif = motif;
+        this.compte = compte;
+    }
 
     public LocalDateTime getDate() {
         return date;

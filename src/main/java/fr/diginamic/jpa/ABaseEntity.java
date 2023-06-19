@@ -3,7 +3,7 @@ package fr.diginamic.jpa;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-public class ABaseEntity {
+public abstract class ABaseEntity {
     @Id
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

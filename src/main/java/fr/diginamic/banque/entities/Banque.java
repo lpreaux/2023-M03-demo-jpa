@@ -12,11 +12,24 @@ import java.util.Set;
 @Entity
 @Table(name = "banque")
 public class Banque extends ABaseEntity {
+    public static Banque createNewBanque(String nom) {
+        Banque banque = new Banque();
+        banque.setNom(nom);
+        return banque;
+    }
+
     @Column(name = "nom", unique = true, nullable = false)
     private String nom;
 
     @OneToMany(mappedBy = "banque", orphanRemoval = true)
     private Set<Client> clients = new LinkedHashSet<>();
+
+    public Banque() {}
+
+    public Banque(Integer id, String nom) {
+        super(id);
+        this.nom = nom;
+    }
 
     public String getNom() {
         return nom;

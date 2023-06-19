@@ -22,7 +22,7 @@ public class Adresse {
 
     public Adresse() {}
 
-    private Adresse(int numero, String rue, int codePostal, String ville) {
+    public Adresse(int numero, String rue, int codePostal, String ville) {
         this.numero = numero;
         this.rue = rue;
         this.codePostal = codePostal;

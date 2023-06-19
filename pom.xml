@@ -12,7 +12,6 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jpa.schemageneration>none</jpa.schemageneration>
     </properties>
 
     <build>
@@ -36,6 +35,9 @@
         </profile>
        <profile>
            <id>prod</id>
+           <properties>
+               <jpa.schemageneration>none</jpa.schemageneration>
+           </properties>
        </profile>
     </profiles>
 

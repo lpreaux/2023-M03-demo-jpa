@@ -12,13 +12,13 @@ import java.util.function.Function;
 public abstract class ARepository<T extends ABaseEntity> {
     private static final String FIND_ALL = "SELECT e FROM %s e";
     private static final String FIND_ONE = "SELECT e FROM %s e WHERE ID=:id";
-    private final EntityManager em = EntityManagerProvider.getEntityManager("demo-jpa");
 
+    protected abstract EntityManager getEntityManager();
     protected abstract Class<T> getEntityType();
     protected abstract Logger getLogger();
 
     protected <R> R doWithEm(Function<EntityManager, R> fn) {
-        return fn.apply(em);
+        return fn.apply(getEntityManager());
     }
 
     protected <R> R doWithTransaction(Function<EntityManager, R> fn) {
@@ -41,21 +41,21 @@ public abstract class ARepository<T extends ABaseEntity> {
     public List<T> findAll() {
         Class<T> entityType = getEntityType();
         String qlString = String.format(FIND_ALL, entityType.getSimpleName());
-        return doWithEm(em1 -> em1.createQuery(qlString, entityType).getResultList());
+        return doWithEm(em -> em.createQuery(qlString, entityType).getResultList());
     }
 
     public T findById(int id) {
         Class<T> entityType = getEntityType();
         String qlString = String.format(FIND_ONE, entityType.getSimpleName());
-        return doWithEm(em1 -> {
-            TypedQuery<T> query = em1.createQuery(qlString, entityType);
+        return doWithEm(em -> {
+            TypedQuery<T> query = em.createQuery(qlString, entityType);
             query.setParameter("id", id);
             return query.getSingleResult();
         });
     }
 
     public T findReferenceById(int id) {
-        return doWithEm(em1 -> em1.getReference(getEntityType(), id));
+        return doWithEm(em -> em.getReference(getEntityType(), id));
     }
 
     public void create(T entity) {

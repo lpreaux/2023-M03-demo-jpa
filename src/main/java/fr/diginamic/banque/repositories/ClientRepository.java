@@ -1,6 +1,6 @@
-package fr.diginamic.bibliotheque.repositories;
+package fr.diginamic.banque.repositories;
 
-import fr.diginamic.bibliotheque.entities.Client;
+import fr.diginamic.banque.entities.Client;
 import fr.diginamic.jpa.ARepository;
 import fr.diginamic.jpa.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
@@ -9,13 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class ClientRepository extends ARepository<Client> {
     private static ClientRepository instance;
-    private static final Logger LOG = LoggerFactory.getLogger(ClientRepository.class);
-    private final EntityManager em = EntityManagerProvider.getEntityManager("demo-jpa");
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger( ClientRepository.class );
 
     public static ClientRepository getInstance() {
         if (null == instance) {
@@ -23,10 +17,14 @@ public class ClientRepository extends ARepository<Client> {
         }
         return instance;
     }
+    private final EntityManager em = EntityManagerProvider.getEntityManager("banque");
 
     private ClientRepository() {}
 
-
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     @Override
     protected Class<Client> getEntityType() {

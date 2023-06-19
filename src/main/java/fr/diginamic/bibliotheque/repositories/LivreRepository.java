@@ -2,6 +2,8 @@ package fr.diginamic.bibliotheque.repositories;
 
 import fr.diginamic.bibliotheque.entities.Livre;
 import fr.diginamic.jpa.ARepository;
+import fr.diginamic.jpa.EntityManagerProvider;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,13 @@ public class LivreRepository extends ARepository<Livre> {
     private static final String FIND_BY_AUTEUR = "SELECT l FROM Livre l WHERE auteur=:auteur";
     private static LivreRepository instance;
     private static final Logger LOG = LoggerFactory.getLogger(LivreRepository.class);
+
+    private final EntityManager em = EntityManagerProvider.getEntityManager("demo-jpa");
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     public static LivreRepository getInstance() {
         if (null == instance) {

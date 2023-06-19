@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,6 +12,16 @@ import java.util.Set;
         @UniqueConstraint(name = "uc_client_nom_prenom", columnNames = {"nom", "prenom"})
 })
 public class Client extends ABaseEntity {
+    public static Client createNewClient(String nom, String prenom, LocalDate dateNaissance, Banque banque, Adresse adresse) {
+        Client client = new Client();
+        client.setNom(nom);
+        client.setPrenom(prenom);
+        client.setDateNaissance(dateNaissance);
+        client.setBanque(banque);
+        client.setAdresse(adresse);
+        return client;
+    }
+
     @Column(name = "nom", nullable = false)
     private String nom;
 
@@ -34,6 +43,18 @@ public class Client extends ABaseEntity {
             joinColumns = @JoinColumn(name = "client_ID"),
             inverseJoinColumns = @JoinColumn(name = "comptes_ID"))
     private Set<Compte> comptes = new LinkedHashSet<>();
+
+    public Client() {}
+
+    public Client(Integer id, String nom, String prenom, LocalDate dateNaissance, Banque banque, Adresse adresse, Set<Compte> comptes) {
+        super(id);
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.banque = banque;
+        this.adresse = adresse;
+        this.comptes = comptes;
+    }
 
     public String getNom() {
         return nom;
